@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Villa {
+  id                      String   @id @default(cuid())
+  slug                    String   @unique
+  title                   String
+  tagline                 String?
+  description             String
+  location                String
+  address                 String
+  
+  // External Booking & Maps Links
+  travelokaUrl            String?
+  googleMapsEmbedUrl      String?
+  googleMapsShareUrl      String?
+  customUrl               String?
+  
+  // Pricing & Smart Discounts
+  basePrice               Float
+  weekendPrice            Float?
+  discountPercent         Float    @default(0)
+  discountThresholdNights Int?
+  customBadge             String?
+  
+  // Capacity & Specs
+  capacity                Int
+  bedrooms                Int
+  bathrooms               Int
+  totalUnits              Int      @default(1)
+  checkInTime             String   @default("14:00")
+  checkOutTime            String   @default("12:00")
+  
+  // Media & Tags (stored as JSON strings for SQLite compatibility)
+  images                  String   // JSON array of image URLs
+  amenities               String   // JSON array of amenity strings
+  houseRules              String?  // JSON array of rule strings
+  nearbyAttractions       String?  // JSON array of attraction objects
+  
+  // Status & Stats
+  featured                Boolean  @default(false)
+  rating                  Float    @default(4.9)
+  reviewCount             Int      @default(0)
+  isActive                Boolean  @default(true)
+  
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  
+  @@map("villas")
+}
+
+model CSWhatsApp {
+  id            String   @id @default(cuid())
+  name          String
+  phoneNumber   String
+  isActive      Boolean  @default(true)
+  isPrimary     Boolean  @default(false)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("cs_whatsapp")
+}
+
+model SiteSettings {
+  id                     String   @id @default(cuid())
+  websiteTitle           String   @default("VillaBatuMurah.ID")
+  primaryColor           String   @default("#0194f3")
+  defaultWA              String
+  globalDiscountNotice   String?
+  
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  
+  @@map("site_settings")
+}
