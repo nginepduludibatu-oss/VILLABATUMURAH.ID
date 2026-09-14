@@ -64,7 +64,16 @@ export default function WishlistPage() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {wishlist.map((villa) => (
               <div key={villa.id} className="relative">
-                <VillaCard villa={villa} />
+                <VillaCard villa={{
+                  ...villa,
+                  capacity: (villa as any).capacity || 6,
+                  bedrooms: (villa as any).bedrooms || 2,
+                  bathrooms: (villa as any).bathrooms || 2,
+                  reviewCount: (villa as any).reviewCount || 0,
+                  tagline: (villa as any).tagline || undefined,
+                  customBadge: (villa as any).customBadge || undefined,
+                  discountPercent: (villa as any).discountPercent || undefined
+                }} />
                 <Button
                   variant="destructive"
                   size="sm"

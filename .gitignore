@@ -49,3 +49,6 @@ prisma/dev.db
 # python scripts
 *.py
 *.sh
+
+# Local Netlify folder
+.netlify

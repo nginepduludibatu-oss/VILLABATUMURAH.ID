@@ -186,7 +186,12 @@ async function VillasPageContent({
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {villas.map((villa) => (
-                  <VillaCard key={villa.id} villa={villa} />
+                  <VillaCard key={villa.id} villa={{
+                    ...villa,
+                    tagline: villa.tagline || undefined,
+                    customBadge: villa.customBadge || undefined,
+                    discountPercent: villa.discountPercent || undefined
+                  }} />
                 ))}
               </div>
             )}

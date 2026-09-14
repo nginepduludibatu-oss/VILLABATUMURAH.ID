@@ -37,7 +37,14 @@ const initialState = {
 export const useFilterStore = create<FilterState>()(
   persist(
     (set) => ({
-      ...initialState,
+      location: initialState.location,
+      checkIn: initialState.checkIn,
+      checkOut: initialState.checkOut,
+      guests: initialState.guests,
+      priceRange: initialState.priceRange as [number, number],
+      bedrooms: initialState.bedrooms,
+      selectedAmenities: initialState.selectedAmenities,
+      sortBy: initialState.sortBy,
       
       setLocation: (location) => set({ location }),
       setCheckIn: (checkIn) => set({ checkIn }),
@@ -53,7 +60,16 @@ export const useFilterStore = create<FilterState>()(
             : [...state.selectedAmenities, amenity],
         })),
       setSortBy: (sortBy) => set({ sortBy }),
-      resetFilters: () => set(initialState),
+      resetFilters: () => set({
+        location: initialState.location,
+        checkIn: initialState.checkIn,
+        checkOut: initialState.checkOut,
+        guests: initialState.guests,
+        priceRange: initialState.priceRange as [number, number],
+        bedrooms: initialState.bedrooms,
+        selectedAmenities: initialState.selectedAmenities,
+        sortBy: initialState.sortBy,
+      }),
     }),
     {
       name: 'villa-filter-storage',

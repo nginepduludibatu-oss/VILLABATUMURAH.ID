@@ -77,8 +77,8 @@ export default async function VillaDetailPage({
               <ImageGallery 
                 images={images}
                 title={villa.title}
-                customBadge={villa.customBadge}
-                discountPercent={villa.discountPercent}
+                customBadge={villa.customBadge || undefined}
+                discountPercent={villa.discountPercent || undefined}
               />
             </div>
 

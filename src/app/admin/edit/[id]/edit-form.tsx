@@ -32,7 +32,7 @@ export function EditForm({ villa }: EditFormProps) {
     setNotification(null)
 
     try {
-      const formData = new FormData(e.currentTarget)
+      const formData = new FormData(e.currentTarget as HTMLFormElement)
       
       const villaData = {
         title: formData.get('title') as string,
