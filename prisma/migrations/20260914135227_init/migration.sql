@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "villas" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "tagline" TEXT,
@@ -11,9 +11,9 @@ CREATE TABLE "villas" (
     "googleMapsEmbedUrl" TEXT,
     "googleMapsShareUrl" TEXT,
     "customUrl" TEXT,
-    "basePrice" REAL NOT NULL,
-    "weekendPrice" REAL,
-    "discountPercent" REAL NOT NULL DEFAULT 0,
+    "basePrice" DOUBLE PRECISION NOT NULL,
+    "weekendPrice" DOUBLE PRECISION,
+    "discountPercent" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "discountThresholdNights" INTEGER,
     "customBadge" TEXT,
     "capacity" INTEGER NOT NULL,
@@ -27,33 +27,39 @@ CREATE TABLE "villas" (
     "houseRules" TEXT,
     "nearbyAttractions" TEXT,
     "featured" BOOLEAN NOT NULL DEFAULT false,
-    "rating" REAL NOT NULL DEFAULT 4.9,
+    "rating" DOUBLE PRECISION NOT NULL DEFAULT 4.9,
     "reviewCount" INTEGER NOT NULL DEFAULT 0,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "villas_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "cs_whatsapp" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "isPrimary" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "cs_whatsapp_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "site_settings" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "websiteTitle" TEXT NOT NULL DEFAULT 'VillaBatuMurah.ID',
     "primaryColor" TEXT NOT NULL DEFAULT '#0194f3',
     "defaultWA" TEXT NOT NULL,
     "globalDiscountNotice" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "site_settings_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
