@@ -14,8 +14,8 @@ function getAllImagePaths(folderName: string): string[] {
   }
   
   const files = fs.readdirSync(folderPath)
-    .filter(file => file.endsWith('.jpg'))
-    .sort((a, b) => {
+    .filter((file: string) => file.endsWith('.jpg'))
+    .sort((a: string, b: string) => {
       // Sort by timestamp in filename
       const matchA = a.match(/ResizedImage_(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)\.jpg/)
       const matchB = b.match(/ResizedImage_(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})_(\d+)\.jpg/)
