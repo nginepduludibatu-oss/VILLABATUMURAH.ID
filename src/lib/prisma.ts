@@ -5,13 +5,13 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 // Configure Prisma for serverless environments
-const prismaClientOptions = {
+const prismaClientOptions: any = {
   log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
 }
 
 // For serverless environments, add connection pool timeout
 if (process.env.NETLIFY || process.env.VERCEL) {
-  (prismaClientOptions as any).datasources = {
+  prismaClientOptions.datasources = {
     db: {
       url: process.env.DATABASE_URL,
     },
