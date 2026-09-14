@@ -12,6 +12,9 @@ export async function GET() {
     return NextResponse.json({ locations })
   } catch (error) {
     console.error('Error fetching locations:', error)
-    return NextResponse.json({ locations: [] }, { status: 500 })
+    // Return fallback locations for static build
+    return NextResponse.json({ 
+      locations: ['Batu', 'Malang', 'Selecta', 'Kusuma Pesanggrahan'] 
+    })
   }
 }

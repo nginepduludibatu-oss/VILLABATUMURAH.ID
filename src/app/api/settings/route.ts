@@ -7,7 +7,14 @@ export async function GET() {
     return NextResponse.json(settings)
   } catch (error) {
     console.error('Error fetching settings:', error)
-    return NextResponse.json({ error: 'Failed to fetch settings', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
+    // Return fallback settings for static build
+    return NextResponse.json({
+      id: 'fallback',
+      websiteTitle: 'VillaBatuMurah.ID - Villa BY N2K',
+      primaryColor: '#0194f3',
+      defaultWA: '6281234567890',
+      globalDiscountNotice: 'Promo Villa BY N2K! Diskon hingga 30% untuk pemesanan minimal 2 malam.',
+    })
   }
 }
 
