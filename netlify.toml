@@ -11,3 +11,13 @@
 
 [functions]
   node_bundler = "esbuild"
+  included_files = ["prisma/dev.db"]
+
+[context.production.environment]
+  DATABASE_URL = "file:./prisma/dev.db"
+  NEXT_PUBLIC_APP_URL = "https://villa-batu-murah.netlify.app"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
