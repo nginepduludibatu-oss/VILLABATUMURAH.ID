@@ -31,7 +31,7 @@ function getAllImagePaths(folderName: string): string[] {
       }
       return a.localeCompare(b)
     })
-    .map(file => `/images/villas/${folderName}/${file}`)
+    .map((file: string) => `/images/villas/${folderName}/${file}`)
   
   return files
 }
