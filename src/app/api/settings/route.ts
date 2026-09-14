@@ -7,7 +7,7 @@ export async function GET() {
     return NextResponse.json(settings)
   } catch (error) {
     console.error('Error fetching settings:', error)
-    return NextResponse.json({ error: 'Failed to fetch settings' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to fetch settings', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }
 
@@ -49,6 +49,6 @@ export async function PUT(request: Request) {
     })
   } catch (error) {
     console.error('Error saving settings:', error)
-    return NextResponse.json({ error: 'Failed to save settings' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to save settings', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }
