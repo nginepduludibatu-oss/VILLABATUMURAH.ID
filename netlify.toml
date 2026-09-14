@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npx prisma generate && npm run build"
   publish = ".next"
 
 [dev]
@@ -16,8 +16,3 @@
   DATABASE_URL = "postgresql://neondb_owner:npg_KVD7XGiAa2IO@ep-little-mud-a51do0k6.us-east-2.aws.neon.tech/neondb?sslmode=require"
   NEXT_PUBLIC_APP_URL = "https://villa-batu-murah.netlify.app"
   RESEND_API_KEY = "re_YkMCbm6F_9wKySgSHHwFn8x615AeZQ8WM"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
