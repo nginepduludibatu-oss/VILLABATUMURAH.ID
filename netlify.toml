@@ -11,4 +11,3 @@
 
 [functions]
   node_bundler = "esbuild"
-  included_files = ["prisma/schema.prisma", "prisma/dev.db"]
