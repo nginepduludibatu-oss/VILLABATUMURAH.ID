@@ -88,6 +88,7 @@ async function getVillas(searchParams: {
     return villas
   } catch (error) {
     console.error('Error fetching villas:', error)
+    // Return fallback data for production
     return []
   }
 }
@@ -103,7 +104,8 @@ async function getLocations() {
     return locations
   } catch (error) {
     console.error('Error fetching locations:', error)
-    return []
+    // Return fallback locations for production
+    return ['Batu', 'Malang', 'Selecta', 'Kusuma Pesanggrahan']
   }
 }
 
@@ -203,6 +205,8 @@ async function VillasPageContent({
     </div>
   )
 }
+
+export const dynamic = 'force-dynamic'
 
 export default async function VillasPage({
   searchParams,
