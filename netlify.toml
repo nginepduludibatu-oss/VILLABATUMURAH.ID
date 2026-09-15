@@ -11,3 +11,6 @@
 
 [functions]
   node_bundler = "esbuild"
+
+[functions]
+  included_files = ["node_modules/.prisma/client/**/*"]
