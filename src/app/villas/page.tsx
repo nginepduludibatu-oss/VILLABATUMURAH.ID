@@ -18,7 +18,7 @@ async function getVillas(searchParams: {
 }) {
   // For now, return empty array to avoid database connection issues
   // TODO: Implement proper database connection with connection pooling
-  return []
+  return [] as any[]
 }
 
 async function getLocations() {
