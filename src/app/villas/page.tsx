@@ -16,9 +16,81 @@ async function getVillas(searchParams: {
   amenities?: string
   sortBy?: string
 }) {
-  // For now, return empty array to avoid database connection issues
-  // TODO: Implement proper database connection with connection pooling
-  return [] as any[]
+  const where: any = {
+    isActive: true,
+  }
+
+  // Search query - Parse natural language
+  if (searchParams.q) {
+    const query = searchParams.q.toLowerCase()
+    
+    // Check for capacity mentions (e.g., "10 orang", "5 guests", "untuk 10 orang")
+    const capacityMatch = query.match(/(\d+)\s*(orang|guests|tamu|people)/i)
+    if (capacityMatch) {
+      where.capacity = { gte: Number(capacityMatch[1]) }
+    }
+    
+    // Check for bedroom mentions (e.g., "3 kamar", "2 bedroom", "untuk 3 kamar")
+    const bedroomMatch = query.match(/(\d+)\s*(kamar|bedroom|bed)/i)
+    if (bedroomMatch) {
+      where.bedrooms = { equals: Number(bedroomMatch[1]) }
+    }
+    
+    // Check for pool mentions
+    if (query.includes('pool') || query.includes('kolam') || query.includes('renang')) {
+      where.tagline = { contains: 'Pool' }
+    }
+    
+    // If no specific filters found, search in title/description/location
+    if (!capacityMatch && !bedroomMatch && !query.includes('pool') && !query.includes('kolam')) {
+      where.OR = [
+        { title: { contains: searchParams.q } },
+        { description: { contains: searchParams.q } },
+        { location: { contains: searchParams.q } },
+        { tagline: { contains: searchParams.q } },
+      ]
+    }
+  }
+
+  // Location filter - exact match
+  if (searchParams.location) {
+    where.location = { equals: searchParams.location }
+  }
+
+  // Guests filter
+  if (searchParams.guests) {
+    where.capacity = { gte: Number(searchParams.guests) }
+  }
+
+  // Bedrooms filter - exact match for specific value
+  if (searchParams.bedrooms) {
+    const bedroomsValue = Number(searchParams.bedrooms)
+    console.log('Bedrooms filter applied:', bedroomsValue, 'type:', typeof bedroomsValue)
+    // Use exact match instead of gte for dropdown filter
+    where.bedrooms = { equals: bedroomsValue }
+  }
+
+  // Sorting
+  let orderBy: any = { featured: 'desc' }
+  if (searchParams.sortBy === 'price-asc') {
+    orderBy = { basePrice: 'asc' }
+  } else if (searchParams.sortBy === 'price-desc') {
+    orderBy = { basePrice: 'desc' }
+  } else if (searchParams.sortBy === 'rating') {
+    orderBy = { rating: 'desc' }
+  }
+
+  try {
+    const villas = await prisma.villa.findMany({
+      where,
+      orderBy,
+    })
+    return villas
+  } catch (error) {
+    console.error('Error fetching villas:', error)
+    // Return fallback data for production
+    return [] as any[]
+  }
 }
 
 async function getLocations() {
