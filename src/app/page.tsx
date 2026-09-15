@@ -22,9 +22,12 @@ async function getFeaturedVillas() {
     return villas
   } catch (error) {
     console.error('Error fetching villas:', error)
+    // Return fallback data for production
     return []
   }
 }
+
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const featuredVillas = await getFeaturedVillas()
