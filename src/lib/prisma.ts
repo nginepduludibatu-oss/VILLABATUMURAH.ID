@@ -4,9 +4,14 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Simple Prisma client for serverless environments
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-})
+// Prisma client with better error handling for serverless
+const prismaClientSingleton = () => {
+  return new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    errorFormat: 'minimal',
+  })
+}
+
+export const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
