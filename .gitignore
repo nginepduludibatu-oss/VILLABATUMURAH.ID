@@ -47,10 +47,6 @@ next-env.d.ts
 prisma/dev.db
 prisma/*.db
 
-# python scripts
-*.py
-*.sh
-
 # Local Netlify folder
 .netlify
 .neon

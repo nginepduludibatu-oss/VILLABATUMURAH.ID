@@ -1,5 +1,5 @@
 [build]
-  command = "npx prisma generate && npm run build"
+  command = "npm run build"
   publish = ".next"
 
 [dev]
@@ -12,3 +12,7 @@
 [functions]
   node_bundler = "esbuild"
   included_files = ["node_modules/.prisma/client/**/*"]
+
+[build.environment]
+  NODE_VERSION = "24"
+  NPM_FLAGS = "--legacy-peer-deps"
