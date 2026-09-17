@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 // In production, store reset tokens in database with expiration
 // For now, we'll use a simple in-memory approach (not for production)
-const RESET_TOKENS = new Map<string, { email: string; expiresAt: number }>()
+// const RESET_TOKENS = new Map<string, { email: string; expiresAt: number }>()
 
 export async function POST(request: Request) {
   try {
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
         success: true,
         message: 'Password berhasil direset',
       })
-    } catch (decodeError) {
+    } catch {
       return NextResponse.json(
         { error: 'Token tidak valid' },
         { status: 400 }

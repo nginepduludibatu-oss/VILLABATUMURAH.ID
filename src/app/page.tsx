@@ -6,6 +6,7 @@ import { FacilityFilters } from '@/components/facility-filters'
 import { FlashSale } from '@/components/flash-sale'
 import { Testimonials } from '@/components/testimonials'
 import { prisma } from '@/lib/prisma'
+import Link from 'next/link'
 
 async function getFeaturedVillas() {
   try {
@@ -61,12 +62,12 @@ export default async function Home() {
             <h2 className="text-2xl font-bold text-slate-900">
               Villa Pilihan Terbaik
             </h2>
-            <a
+            <Link
               href="/villas"
               className="text-traveloka hover:text-blue-600 font-medium"
             >
               Lihat Semua →
-            </a>
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

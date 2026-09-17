@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Search, Heart, Menu, X, Phone } from 'lucide-react'
+import { Heart, Menu, X, Phone } from 'lucide-react'
 import { Logo } from './logo'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'

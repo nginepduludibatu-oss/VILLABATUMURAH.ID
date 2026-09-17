@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
-import { Upload, X, Image as ImageIcon, FileText } from 'lucide-react'
+import { Upload, X, FileText } from 'lucide-react'
 
 interface FileUploadProps {
   onFilesChange: (files: string[]) => void
@@ -22,6 +22,38 @@ export function FileUpload({
 }: FileUploadProps) {
   const [files, setFiles] = useState<string[]>(existingFiles)
   const [isDragging, setIsDragging] = useState(false)
+
+  const processFiles = async (fileList: File[]) => {
+    const processedFiles: string[] = []
+
+    for (const file of fileList) {
+      // Check file size
+      if (file.size > maxSize * 1024 * 1024) {
+        alert(`File ${file.name} exceeds ${maxSize}MB limit`)
+        continue
+      }
+
+      // Check file type
+      if (accept && !file.type.match(accept.replace('*', '.*'))) {
+        alert(`File ${file.name} is not an accepted type`)
+        continue
+      }
+
+      // Convert to base64 (for storage in JSON)
+      const reader = new FileReader()
+      reader.onload = () => {
+        const base64 = reader.result as string
+        processedFiles.push(base64)
+
+        if (processedFiles.length === fileList.length) {
+          const newFiles = [...files, ...processedFiles]
+          setFiles(newFiles)
+          onFilesChange(newFiles)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -45,38 +77,6 @@ export function FileUpload({
     const selectedFiles = Array.from(e.target.files || [])
     processFiles(selectedFiles)
   }, [])
-
-  const processFiles = async (fileList: File[]) => {
-    const processedFiles: string[] = []
-
-    for (const file of fileList) {
-      // Check file size
-      if (file.size > maxSize * 1024 * 1024) {
-        alert(`File ${file.name} exceeds ${maxSize}MB limit`)
-        continue
-      }
-
-      // Check file type
-      if (accept && !file.type.match(accept.replace('*', '.*'))) {
-        alert(`File ${file.name} is not an accepted type`)
-        continue
-      }
-
-      // Convert to base64 (for storage in JSON)
-      const reader = new FileReader()
-      reader.onload = () => {
-        const base64 = reader.result as string
-        processedFiles.push(base64)
-        
-        if (processedFiles.length === fileList.length) {
-          const newFiles = [...files, ...processedFiles]
-          setFiles(newFiles)
-          onFilesChange(newFiles)
-        }
-      }
-      reader.readAsDataURL(file)
-    }
-  }
 
   const removeFile = (index: number) => {
     const newFiles = files.filter((_, i) => i !== index)

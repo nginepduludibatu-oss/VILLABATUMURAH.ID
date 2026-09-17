@@ -1,17 +1,15 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { BookingSidebar } from '@/components/booking-sidebar'
 import { ImageGallery } from '@/components/image-gallery'
 import { prisma } from '@/lib/prisma'
-import { 
-  MapPin, Users, Bed, Bath, Clock, Star, Heart, Share2, 
-  Navigation, Check, X 
+import {
+  MapPin, Users, Bed, Bath, Clock, Star, Heart, Share2,
+  Navigation, Check, X
 } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -32,9 +30,10 @@ export const dynamic = 'force-dynamic'
 export default async function VillaDetailPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const villa = await getVilla(params.slug)
+  const { slug } = await params
+  const villa = await getVilla(slug)
 
   if (!villa) {
     notFound()
@@ -44,14 +43,6 @@ export default async function VillaDetailPage({
   const amenities = JSON.parse(villa.amenities)
   const houseRules = villa.houseRules ? JSON.parse(villa.houseRules) : []
   const nearbyAttractions = villa.nearbyAttractions ? JSON.parse(villa.nearbyAttractions) : []
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
-  }
 
   const discountedPrice = villa.discountPercent 
     ? villa.basePrice * (1 - villa.discountPercent / 100)
@@ -238,7 +229,7 @@ export default async function VillaDetailPage({
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-slate-900 mb-4">Tempat Wisata Terdekat</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {nearbyAttractions.map((attraction: any, index: number) => (
+                  {nearbyAttractions.map((attraction: { name: string; distance: string }, index: number) => (
                     <Card key={index} className="bg-white">
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">

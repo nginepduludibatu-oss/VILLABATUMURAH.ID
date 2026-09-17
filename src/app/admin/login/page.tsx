@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
       } else {
         setError(result.error || 'Login gagal. Periksa username dan password.')
       }
-    } catch (err) {
+    } catch {
       setError('Terjadi kesalahan. Silakan coba lagi.')
     } finally {
       setIsLoading(false)
@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
       } else {
         setError(result.error || 'Gagal mengirim link reset password.')
       }
-    } catch (err) {
+    } catch {
       setError('Terjadi kesalahan. Silakan coba lagi.')
     } finally {
       setIsResetting(false)

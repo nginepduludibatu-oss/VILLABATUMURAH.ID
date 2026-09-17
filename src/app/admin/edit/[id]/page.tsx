@@ -20,9 +20,10 @@ async function getVilla(id: string) {
 export default async function EditVillaPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const villa = await getVilla(params.id)
+  const { id } = await params
+  const villa = await getVilla(id)
 
   if (!villa) {
     return (

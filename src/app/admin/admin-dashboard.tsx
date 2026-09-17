@@ -3,26 +3,71 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+interface Villa {
+  id: string
+  title: string
+  slug: string
+  location: string
+  address: string
+  capacity: number
+  bedrooms: number
+  bathrooms: number
+  basePrice: number
+  weekendPrice: number | null
+  discountPercent: number
+  isActive: boolean
+  featured: boolean
+  rating: number
+  reviewCount: number
+  tagline: string | null
+  customBadge: string | null
+  travelokaUrl: string | null
+  googleMapsEmbedUrl: string | null
+  googleMapsShareUrl: string | null
+  customUrl: string | null
+  images: string
+  amenities: string
+  houseRules: string | null
+  nearbyAttractions: string | null
+  description: string
+  totalUnits: number
+  checkInTime: string
+  checkOutTime: string
+  discountThresholdNights: number | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+interface SiteSettings {
+  id: string
+  websiteTitle: string
+  primaryColor: string
+  defaultWA: string
+  globalDiscountNotice: string | null
+  createdAt: Date
+  updatedAt: Date
+}
+
 interface AdminDashboardProps {
-  villas: any[]
-  settings: any
+  villas: Villa[]
+  settings?: SiteSettings | null
 }
 
 export function AdminDashboard({ villas, settings }: AdminDashboardProps) {
   const router = useRouter()
   const [isSavingSettings, setIsSavingSettings] = useState(false)
   const [settingsNotification, setSettingsNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null)
-  
+
   // Search state
   const [searchQuery, setSearchQuery] = useState('')
-  
+
   // Bulk price edit state
   const [isBulkSaving, setIsBulkSaving] = useState(false)
   const [bulkNotification, setBulkNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null)
   const [selectedBedroomCategory, setSelectedBedroomCategory] = useState('')
   const [newBasePrice, setNewBasePrice] = useState('')
   const [newWeekendPrice, setNewWeekendPrice] = useState('')
-  
+
   // Settings state
   const [websiteTitle, setWebsiteTitle] = useState(settings?.websiteTitle || 'VillaBatuMurah.ID')
   const [primaryColor, setPrimaryColor] = useState(settings?.primaryColor || '#0194f3')

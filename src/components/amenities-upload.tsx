@@ -58,7 +58,7 @@ export function AmenitiesUpload({
         onAmenitiesChange(updated)
       }
     }
-  }, [amenities])
+  }, [amenities, onAmenitiesChange])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {

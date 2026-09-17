@@ -29,33 +29,10 @@ export function HeroSearch() {
     if (searchQuery) params.append('q', searchQuery)
     if (location) params.append('location', location)
     if (guests) params.append('guests', guests.toString())
-    
+
     const url = `/villas?${params.toString()}`
     console.log('Navigating to:', url)
     router.push(url)
-  }
-
-  const handleAskAdmin = () => {
-    let message = 'Halo Admin, saya ingin bertanya tentang villa di VillaBatuMurah.ID'
-    
-    if (searchQuery) {
-      message += `\n\nPermintaan saya: ${searchQuery}`
-    }
-    if (location) {
-      message += `\nLokasi yang diinginkan: ${location}`
-    }
-    if (checkIn) {
-      message += `\nTanggal Check-in: ${checkIn}`
-    }
-    if (checkOut) {
-      message += `\nTanggal Check-out: ${checkOut}`
-    }
-    if (guests) {
-      message += `\nJumlah Tamu: ${guests} orang`
-    }
-    
-    const encodedMessage = encodeURIComponent(message)
-    window.open(`https://wa.me/6281216919381?text=${encodedMessage}`, '_blank')
   }
 
   return (

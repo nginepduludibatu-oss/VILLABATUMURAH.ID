@@ -55,7 +55,7 @@ export function Testimonials() {
                   </div>
                   
                   <p className="mb-4 text-lg italic text-slate-600">
-                    "{testimonial.text}"
+                    &ldquo;{testimonial.text}&rdquo;
                   </p>
                   
                   <div className="flex items-center justify-between">

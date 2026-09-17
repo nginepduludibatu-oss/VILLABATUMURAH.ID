@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { headers } from 'next/headers'
 
 // Admin credentials (in production, these should be in environment variables or database)
 const ADMIN_CREDENTIALS = {

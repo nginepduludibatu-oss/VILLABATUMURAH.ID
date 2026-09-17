@@ -14,7 +14,10 @@ export async function PUT(request: Request) {
     }
 
     // Build update data
-    const updateData: any = {
+    const updateData: {
+      basePrice: number
+      weekendPrice?: number
+    } = {
       basePrice: Number(basePrice),
     }
 

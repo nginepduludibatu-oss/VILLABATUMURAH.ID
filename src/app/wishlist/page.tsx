@@ -11,14 +11,6 @@ import Link from 'next/link'
 export default function WishlistPage() {
   const { wishlist, removeFromWishlist, clearWishlist } = useWishlistStore()
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-    }).format(price)
-  }
-
   return (
     <div className="min-h-screen bg-slate-50">
       <Header />
@@ -66,13 +58,13 @@ export default function WishlistPage() {
               <div key={villa.id} className="relative">
                 <VillaCard villa={{
                   ...villa,
-                  capacity: (villa as any).capacity || 6,
-                  bedrooms: (villa as any).bedrooms || 2,
-                  bathrooms: (villa as any).bathrooms || 2,
-                  reviewCount: (villa as any).reviewCount || 0,
-                  tagline: (villa as any).tagline || undefined,
-                  customBadge: (villa as any).customBadge || undefined,
-                  discountPercent: (villa as any).discountPercent || undefined
+                  capacity: (villa as { capacity?: number }).capacity || 6,
+                  bedrooms: (villa as { bedrooms?: number }).bedrooms || 2,
+                  bathrooms: (villa as { bathrooms?: number }).bathrooms || 2,
+                  reviewCount: (villa as { reviewCount?: number }).reviewCount || 0,
+                  tagline: (villa as { tagline?: string }).tagline || undefined,
+                  customBadge: (villa as { customBadge?: string }).customBadge || undefined,
+                  discountPercent: (villa as { discountPercent?: number }).discountPercent || undefined
                 }} />
                 <Button
                   variant="destructive"

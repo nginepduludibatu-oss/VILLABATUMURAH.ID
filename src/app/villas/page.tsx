@@ -16,7 +16,18 @@ async function getVillas(searchParams: {
   amenities?: string
   sortBy?: string
 }) {
-  const where: any = {
+  const where: {
+    isActive: boolean
+    capacity?: { gte?: number }
+    location?: { contains?: string; mode?: 'insensitive' } | { equals?: string }
+    basePrice?: { gte?: number; lte?: number }
+    bedrooms?: { equals?: number }
+    featured?: boolean
+    title?: { contains?: string; mode?: 'insensitive' }
+    description?: { contains?: string; mode?: 'insensitive' }
+    tagline?: { contains?: string; mode?: 'insensitive' }
+    OR?: Array<{ title?: { contains?: string; mode?: 'insensitive' }; description?: { contains?: string; mode?: 'insensitive' }; location?: { contains?: string; mode?: 'insensitive' } | { equals?: string }; tagline?: { contains?: string; mode?: 'insensitive' } }>
+  } = {
     isActive: true,
   }
 
@@ -38,16 +49,16 @@ async function getVillas(searchParams: {
     
     // Check for pool mentions
     if (query.includes('pool') || query.includes('kolam') || query.includes('renang')) {
-      where.tagline = { contains: 'Pool' }
+      where.tagline = { contains: 'Pool', mode: 'insensitive' }
     }
     
     // If no specific filters found, search in title/description/location
     if (!capacityMatch && !bedroomMatch && !query.includes('pool') && !query.includes('kolam')) {
       where.OR = [
-        { title: { contains: searchParams.q } },
-        { description: { contains: searchParams.q } },
-        { location: { contains: searchParams.q } },
-        { tagline: { contains: searchParams.q } },
+        { title: { contains: searchParams.q, mode: 'insensitive' } },
+        { description: { contains: searchParams.q, mode: 'insensitive' } },
+        { location: { contains: searchParams.q, mode: 'insensitive' } },
+        { tagline: { contains: searchParams.q, mode: 'insensitive' } },
       ]
     }
   }
@@ -71,7 +82,7 @@ async function getVillas(searchParams: {
   }
 
   // Sorting
-  let orderBy: any = { featured: 'desc' }
+  let orderBy: { featured?: 'desc'; basePrice?: 'asc' | 'desc'; rating?: 'desc' } = { featured: 'desc' }
   if (searchParams.sortBy === 'price-asc') {
     orderBy = { basePrice: 'asc' }
   } else if (searchParams.sortBy === 'price-desc') {
@@ -89,7 +100,7 @@ async function getVillas(searchParams: {
   } catch (error) {
     console.error('Error fetching villas:', error)
     // Return fallback data for production
-    return [] as any[]
+    return []
   }
 }
 
@@ -102,29 +113,19 @@ async function getLocations() {
     })
     const locations = [...new Set(villas.map(v => v.location).filter(Boolean))]
     return locations
-  } catch (error) {
-    console.error('Error fetching locations:', error)
+  } catch {
+    console.error('Error fetching locations')
     // Return fallback locations for production
     return ['Batu', 'Malang', 'Selecta', 'Kusuma Pesanggrahan']
   }
 }
 
-async function getMaxCapacity() {
-  try {
-    const villa = await prisma.villa.findFirst({
-      where: { isActive: true },
-      orderBy: { capacity: 'desc' },
-    })
-    return villa?.capacity || 10
-  } catch (error) {
-    return 10
-  }
-}
+export const dynamic = 'force-dynamic'
 
-async function VillasPageContent({
+export default async function VillasPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     q?: string
     location?: string
     guests?: string
@@ -133,11 +134,11 @@ async function VillasPageContent({
     bedrooms?: string
     amenities?: string
     sortBy?: string
-  }
+  }>
 }) {
-  const villas = await getVillas(searchParams)
+  const resolvedSearchParams = await searchParams || {}
+  const villas = await getVillas(resolvedSearchParams)
   const locations = await getLocations()
-  const maxCapacity = await getMaxCapacity()
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -204,23 +205,4 @@ async function VillasPageContent({
       <Footer />
     </div>
   )
-}
-
-export const dynamic = 'force-dynamic'
-
-export default async function VillasPage({
-  searchParams,
-}: {
-  searchParams: {
-    q?: string
-    location?: string
-    guests?: string
-    minPrice?: string
-    maxPrice?: string
-    bedrooms?: string
-    amenities?: string
-    sortBy?: string
-  }
-}) {
-  return <VillasPageContent searchParams={searchParams} />
 }

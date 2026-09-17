@@ -7,8 +7,43 @@ import { AmenitiesUpload } from '@/components/amenities-upload'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+interface Villa {
+  id: string
+  title: string
+  slug: string
+  location: string
+  address: string
+  capacity: number
+  bedrooms: number
+  bathrooms: number
+  basePrice: number
+  weekendPrice: number | null
+  discountPercent: number
+  isActive: boolean
+  featured: boolean
+  rating: number
+  reviewCount: number
+  tagline: string | null
+  customBadge: string | null
+  travelokaUrl: string | null
+  googleMapsEmbedUrl: string | null
+  googleMapsShareUrl: string | null
+  customUrl: string | null
+  images: string
+  amenities: string
+  houseRules: string | null
+  nearbyAttractions: string | null
+  description: string
+  totalUnits: number
+  checkInTime: string
+  checkOutTime: string
+  discountThresholdNights: number | null
+  createdAt: Date
+  updatedAt: Date
+}
+
 interface EditFormProps {
-  villa: any
+  villa: Villa
 }
 
 export function EditForm({ villa }: EditFormProps) {
@@ -140,7 +175,7 @@ export function EditForm({ villa }: EditFormProps) {
             <input
               name="address"
               type="text"
-              defaultValue={villa.address}
+              defaultValue={villa.address || ''}
               className="w-full rounded-md border border-input px-3 py-2 text-sm"
             />
           </div>
@@ -209,7 +244,7 @@ export function EditForm({ villa }: EditFormProps) {
           <label className="block text-sm font-medium mb-2">Deskripsi</label>
           <textarea
             name="description"
-            defaultValue={villa.description}
+            defaultValue={villa.description || ''}
             rows={4}
             className="w-full rounded-md border border-input px-3 py-2 text-sm"
           />

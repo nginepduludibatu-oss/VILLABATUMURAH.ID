@@ -62,7 +62,7 @@ function ResetPasswordContent() {
       } else {
         setError(result.error || 'Gagal mereset password.')
       }
-    } catch (err) {
+    } catch {
       setError('Terjadi kesalahan. Silakan coba lagi.')
     } finally {
       setIsLoading(false)
